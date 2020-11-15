@@ -1,18 +1,28 @@
-#https://github.com/hMatoba/Piexif/blob/master/piexif/_exif.py
-#http://www.cipa.jp/std/documents/e/DC-008-2012_E.pdf
-#types on each field https://piexif.readthedocs.io/en/latest/appendices.html
-import piexif
-from pprint import pprint
+#https://stackoverflow.com/questions/42024255/bulk-join-json-with-jpg-from-google-takeout
+#https://exiftool.org/
 
-def adjust_exif(exif_dict, text):
-    exif_dict['1st'][piexif.ImageIFD.ImageDescription]=text
-    exif_dict['Exif'][piexif.ExifIFD.SceneType]=b'\x01' # Some parsing error fix in library
-    return exif_dict
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--path')
+args = parser.parse_args()
 
-path = "test.jpg"
-exif_dict = piexif.load(path)
-pprint(exif_dict)
-quit()
-new_exif = adjust_exif(exif_dict,'blah')
-exif_bytes = piexif.dump(new_exif)
-piexif.insert(exif_bytes, "test.jpg")
+from pathlib import Path
+files = []
+for path in Path(args.path).rglob('*.jp*g'):
+    files.append(path)
+for path in Path(args.path).rglob('*.JP*G'):
+    files.append(path)
+      
+if len(files) == 0:
+    print('No new files found')
+    exit()
+
+import os
+for f in files:
+    desc = f.relative_to(args.path).parent
+    # desc=str(desc).replace('/','\n')
+    print(f'{f}: {desc}')
+    # os.system(f'/usr/bin/exiftool -charset utf8 -charset iptc=utf8 -codedcharacterset=utf8 -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" "{f}"')
+    # os.system(f'/usr/bin/exiftool -charset Hebrew -charset iptc=Hebrew -codedcharacterset=utf8 -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" "{f}"')
+    os.system(f'/usr/bin/exiftool -charset utf8 -charset iptc=utf8 -codedcharacterset=utf8 -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" -Title="{desc}" "{f}"')
+    # quit()
