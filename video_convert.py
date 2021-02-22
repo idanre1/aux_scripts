@@ -19,12 +19,22 @@ if len(files) == 0:
     exit()
 
 import os
+from subprocess import Popen, PIPE
 for f in files:
     desc = f.relative_to(args.path)
     output = f'{desc.parent}/{desc.stem}.mp4'
     # desc=str(desc).replace('/','\n')
     log.info(f'{f}: {output}')
     cmd = f'sudo /usr/bin/ffmpeg -i "{f}" -vcodec copy -acodec copy "{output}"'
-    log.debug(os.popen(cmd).read())
+    p = Popen(cmd,
+          shell=True, bufsize=-1,
+          stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
+    stdout, stderr = p.communicate()
+    stdout = stdout.decode("utf-8")
+    stderr = stderr.decode("utf-8")
+    
+    if stdout != "":
+        log.debug(stdout)
+    if stderr != "":
+        log.debug(stderr)
     break
-
