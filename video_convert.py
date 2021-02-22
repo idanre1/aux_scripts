@@ -37,4 +37,3 @@ for f in files:
         log.debug(stdout)
     if stderr != "":
         log.debug(stderr)
-    break
