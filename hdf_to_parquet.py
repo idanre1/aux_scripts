@@ -24,7 +24,7 @@ for f in files:
     df = pd.read_hdf(f)
 
     # tatget output
-    desc = f.relative_to(args.path)
+    desc = f#.relative_to(args.path)
     output = f'{desc.parent}/{desc.stem}.parquet'
 
     # execute
