@@ -20,15 +20,18 @@ if len(files) == 0:
     exit()
 
 for f in files:
-    # Original
-    df = pd.read_hdf(f)
-
-    # tatget output
+    # target output
     desc = f#.relative_to(args.path)
     output = f'{desc.parent}/{desc.stem}.parquet'
 
+    # Original
+    print(f'Converting from: {f}')
+    df = pd.read_hdf(f)
+
     # execute
-    print(f'Converting from: {f}\nConverting to:{output}')
+    print(f'Converting to:{output}')
     df.to_parquet(output)
 
+    # FOLD
+    print(f'RM: {f}')
     os.remove(f)
