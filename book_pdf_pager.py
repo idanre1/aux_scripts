@@ -1,9 +1,8 @@
-from PyPDF2 import PdfFileReader, PdfFileWriter
-from io import BytesIO
-import copy
 from pathlib import Path
 
 def book_pdf(from_filename, output_filename):
+	from PyPDF2 import PdfFileReader, PdfFileWriter
+	from io import BytesIO
 	pdf_reader = PdfFileReader(str(from_filename))
 	pdf_writer = PdfFileWriter()
 	buffer     = BytesIO()
