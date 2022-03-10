@@ -23,12 +23,7 @@ def check_for_old_formats(filename):
     not_supported = np.array(['mpeg1video', 'wmv2'])
     
     cmd = f'ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 {filename}'
-    p = Popen(cmd,
-          shell=True, bufsize=-1,
-          stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
-    stdout, stderr = p.communicate()
-    stdout = stdout.decode("utf-8")
-    stderr = stderr.decode("utf-8")
+    stdout, stderr = _exe_cmd(cmd)
     
     # print(stdout); quit()
     if np.isin(stdout.rstrip(), not_supported).sum() > 0:
@@ -38,7 +33,7 @@ def check_for_old_formats(filename):
     else:
         return False
 
-def exe_cmd(cmd):
+def _exe_cmd(cmd):
     p = Popen(cmd,
           shell=True, bufsize=-1,
           stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
@@ -49,7 +44,7 @@ def exe_cmd(cmd):
 
 def slow_convert(f, output):
     cmd = f'sudo /usr/bin/ffmpeg -y -i "{f}" "{output}"'
-    stdout, stderr = exe_cmd(cmd)
+    stdout, stderr = _exe_cmd(cmd)
     # if len(stderr) > 0:
     #     print(stderr)
     #     quit()
@@ -57,7 +52,7 @@ def slow_convert(f, output):
 
 def fast_convert(f, output):
     cmd = f'sudo /usr/bin/ffmpeg -y -i "{f}" -vcodec copy -acodec copy "{output}"'
-    stdout, stderr = exe_cmd(cmd)
+    stdout, stderr = _exe_cmd(cmd)
     if len(stderr) > 0:
         print('FAST_WARNING - fallback to slow')
         slow_convert(f, output)
