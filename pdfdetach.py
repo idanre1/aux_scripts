@@ -25,7 +25,7 @@ if len(files) == 0:
 import os
 
 from poppler import load_from_file
-def list_files(f):
+def _list_files(f):
     pdf_document = load_from_file(f)
     if pdf_document.has_embedded_files():
         files = pdf_document.embedded_files()
@@ -43,5 +43,5 @@ for f in files:
     log.info(f'{f}: {output}')
 
     # List embedded files in pdf
-    list_files(f)
+    _list_files(f)
 
