@@ -14,6 +14,14 @@ for path in Path(args.path).rglob('*.flv'):
     files.append(path)
 for path in Path(args.path).rglob('*.mp*g'):
     files.append(path)
+for path in Path(args.path).rglob('*.avi'):
+    files.append(path)
+for path in Path(args.path).rglob('*.AVI'):
+    files.append(path)
+for path in Path(args.path).rglob('*.MOV'):
+    files.append(path)
+for path in Path(args.path).rglob('*.quicktime'):
+    files.append(path)
       
 if len(files) == 0:
     print('No new files found')
