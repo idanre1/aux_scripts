@@ -1,3 +1,4 @@
+# Pack all jpg files in a folder to a pdf file
 from pathlib import Path
 
 def filelist_to_pdf(lst, filename):

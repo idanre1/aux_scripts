@@ -1,3 +1,5 @@
+# Add exif album description to all jpg files in a folder
+
 #https://stackoverflow.com/questions/42024255/bulk-join-json-with-jpg-from-google-takeout
 #https://exiftool.org/
 
@@ -24,5 +26,7 @@ for f in files:
     print(f'{f}: {desc}')
     # os.system(f'/usr/bin/exiftool -charset utf8 -charset iptc=utf8 -codedcharacterset=utf8 -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" "{f}"')
     # os.system(f'/usr/bin/exiftool -charset Hebrew -charset iptc=Hebrew -codedcharacterset=utf8 -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" "{f}"')
+    # os.system(f'/usr/bin/exiftool -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" "{f}"')
     os.system(f'/usr/bin/exiftool -charset utf8 -charset iptc=utf8 -codedcharacterset=utf8 -overwrite_original -Caption-Abstract="{desc}" -Description="{desc}" -ImageDescription="{desc}" -Title="{desc}" "{f}"')
+
     # quit()

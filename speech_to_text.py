@@ -1,3 +1,5 @@
+# Azure cognitive services. Speech to text.
+
 # https://github.com/Azure-Samples/cognitive-services-speech-sdk/blob/master/samples/python/console/speech_sample.py
 # https://learn.microsoft.com/en-GB/azure/cognitive-services/speech-service/how-to-use-codec-compressed-audio-input-streams?tabs=linux%2Cdebian%2Cjava-android%2Cterminal&pivots=programming-language-python
 # pip install azure-cognitiveservices-speech

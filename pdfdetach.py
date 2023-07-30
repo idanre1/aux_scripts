@@ -3,6 +3,9 @@
 # pip install cmake  
 # pip install --prefix="~/py3env" python-poppler
 
+# Usage:
+# List embedded files in pdf
+
 import logging
 import logging.config
 logging.config.fileConfig('/nas/settings/logging.cfg')

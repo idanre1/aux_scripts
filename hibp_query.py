@@ -1,3 +1,6 @@
+# Have I Been Pwnd?
+# https://haveibeenpwned.com/Passwords
+# Search database for pawned passwords
 import hashlib
 import mmap
 

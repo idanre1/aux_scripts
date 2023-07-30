@@ -1,3 +1,5 @@
+# Convert scanned pdfs to book format
+
 from pathlib import Path
 
 def book_pdf(from_filename, output_filename):

@@ -1,3 +1,5 @@
+# Ping using SSH to a remote host
+
 import datetime
 import timeit
 import subprocess

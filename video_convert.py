@@ -1,4 +1,6 @@
 # sudo apt install ffmpeg
+
+# Convert legacy file formats to mp4
 import numpy as np
 
 import argparse
