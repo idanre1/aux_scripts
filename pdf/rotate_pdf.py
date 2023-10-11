@@ -3,20 +3,20 @@
 from pathlib import Path
 
 def rotate_pdf_clockwise(from_filename, output_filename, clockwise_angle=90):
-	from PyPDF2 import PdfFileReader, PdfFileWriter
+	from PyPDF2 import PdfReader, PdfWriter
 	pdf_fh_in  = open(from_filename, 'rb')
-	pdf_reader = PdfFileReader(str(from_filename))
-	pdf_writer = PdfFileWriter()
+	pdf_reader = PdfReader(str(from_filename))
+	pdf_writer = PdfWriter()
 
 	#######################################
 	# Rotation
 	#######################################
-	n = pdf_reader.getNumPages()
+	n = len(pdf_reader.pages)
 	print(f'File: {from_filename} rotate {n} pages')
-	for n in range(pdf_reader.getNumPages()):
-		page = pdf_reader.getPage(n)
-		page.rotateClockwise(clockwise_angle)
-		pdf_writer.addPage(page)
+	for n in range(len(pdf_reader.pages)):
+		page = pdf_reader.pages[n]
+		page.rotate(clockwise_angle)
+		pdf_writer.add_page(page)
 
 	pdf_fh_out = open(output_filename, 'wb')
 	pdf_writer.write(pdf_fh_out)
