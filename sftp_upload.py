@@ -64,11 +64,14 @@ if __name__ == "__main__":
 	parser.add_argument('hostname', type=str, help='Remote server hostname')
 	parser.add_argument('-f', '--filename', type=str, help='Filename to upload')
 	parser.add_argument('-u', '--user', type=str, help='Remote server username')
-	parser.add_argument('-p', '--password', type=str, help='Remote server password')
 	parser.add_argument('--dest_path', type=str, default='.', help='Destination path on remote server')
 	args = parser.parse_args()
 
-	sftp = SftpUpload(args.hostname, args.user, args.password)
+	import getpass
+	print('Enter password')
+	pw = getpass.getpass()
+
+	sftp = SftpUpload(args.hostname, args.user, pw)
 	sftp.upload_sync(args.filename, args.dest_path)
 
 
