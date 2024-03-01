@@ -15,6 +15,10 @@ import json
 # https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-configure-subscription
 speechsdk_creds = json.load(open("azure_speechsdk_creds.json"))
 speech_key, service_region = speechsdk_creds['SPEECH_KEY'], speechsdk_creds['SERVICE_REGION']
+# {
+#     "SPEECH_KEY":"from cognitive key1/2",
+#     "SERVICE_REGION":"westus"
+# }
 
 # handle compressed audio input streams
 class BinaryFileReaderCallback(speechsdk.audio.PullAudioInputStreamCallback):
