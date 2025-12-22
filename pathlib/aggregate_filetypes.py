@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-i", "--inn")
+parser.add_argument("-i", "--in")
 parser.add_argument("-o", "--out")
 parser.add_argument("-t", "--type")
 args = parser.parse_args()
