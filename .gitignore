@@ -1,5 +1,6 @@
 *_creds.json
 scratch/
+dumps/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

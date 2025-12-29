@@ -112,13 +112,29 @@ def move_if_both(src_file: str, dst_file: str, ps_script: str):
 
 	src_win = wsl_to_windows(src_file)
 	dst_win = wsl_to_windows(dst_file)
+	# Destination folder with source file name
+	dst_dir = dst_file.parent
+	new_dst = dst_dir / src_file.name
+	new_dst_win = wsl_to_windows(new_dst)
 
 	ps_script.parent.mkdir(parents=True, exist_ok=True)
 
 	with ps_script.open("a", encoding="utf-8") as f:
-		f.write(f"# Move {src_win} → {dst_win}\n")
-		f.write(f"if (Test-Path \"{dst_win}\") {{ Remove-Item -Force \"{dst_win}\" }}\n")
-		f.write(f"Move-Item -Force \"{src_win}\" \"{dst_win}\"\n\n")
+		f.write(f"# Copy {src_win} → {new_dst_win} (then delete old dest and src on success)\n")
+		f.write(f"if (Test-Path \"{dst_win}\") {{\n")
+		f.write(f"    try {{\n")
+		f.write(f"        Copy-Item -LiteralPath \"{src_win}\" -Destination \"{new_dst_win}\" -Force -ErrorAction Stop\n")
+		f.write(f"        if (Test-Path \"{new_dst_win}\") {{\n")
+		f.write(f"            if (\"{dst_win}\" -ne \"{new_dst_win}\") {{ Remove-Item -LiteralPath \"{dst_win}\" -Force }}\n")
+		f.write(f"            Remove-Item -LiteralPath \"{src_win}\" -Force\n")
+		f.write(f"            Write-Host \"Copied '{src_win}' to '{new_dst_win}' and cleaned up old files.\"\n")
+		f.write(f"        }} else {{\n")
+		f.write(f"            Write-Warning \"Copy reported success but destination '{new_dst_win}' does not exist.\"\n")
+		f.write(f"        }}\n")
+		f.write(f"    }} catch {{\n")
+		f.write(f"        Write-Warning \"Copy failed for '{src_win}' to '{new_dst_win}': $_\"\n")
+		f.write(f"    }}\n")
+		f.write("}\n\n")
 
 
 # Example usage:
@@ -128,6 +144,7 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-p1", "--path1", help="From path")
 	parser.add_argument("-p2", "--path2", help="To path")
+	parser.add_argument("-f", "--filter", help="Filter string (optional)", default="")
 	args = parser.parse_args()
 
 	p_from = Path(args.path1)
@@ -138,7 +155,9 @@ if __name__ == "__main__":
 	write_txt_table(df, Path("comparison_report.txt"))
 
 	df = df[df['STATUS'] == 'BOTH']
-	df = df[df['NORMALIZED'].str.contains('amy')]
+	if args.filter:
+		if args.filter != "":
+			df = df[df['NORMALIZED'].str.contains(args.filter)]
 
 	print("Moving")
 	for idx,row in tqdm(df.iterrows()):
